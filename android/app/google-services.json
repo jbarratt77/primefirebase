@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1051714563641",
+    "project_id": "primefirebase-f7082",
+    "storage_bucket": "primefirebase-f7082.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1051714563641:android:cb3361b12659f973bee7e8",
+        "android_client_info": {
+          "package_name": "com.primefirebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFWI2KfZwLWc3Edx7E2TBD0xMz4LbUILE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
