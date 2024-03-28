@@ -12,7 +12,20 @@
           "package_name": "com.primefirebase"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1051714563641-5nejc81sthja9rebuptld5q8thmff133.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.primefirebase",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "1051714563641-admse8p2sl1n0js0oc51h5lr7vg88aan.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAFWI2KfZwLWc3Edx7E2TBD0xMz4LbUILE"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1051714563641-admse8p2sl1n0js0oc51h5lr7vg88aan.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1051714563641-vhqu1dl8htq3s69dl90l9p44h2flpopl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.primefirebase"
+              }
+            }
+          ]
         }
       }
     }
