@@ -11,7 +11,7 @@ import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import firestore, {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
 
 type User = FirebaseAuthTypes.User | null;
-type FirestoreUser = FirebaseFirestoreTypes.DocumentData | null;
+type FirestoreUser = FirebaseFirestoreTypes.DocumentData | null | undefined;
 type ContextState = {user: User, firestoreUser: FirestoreUser};
 interface Props {
   children: ReactNode;
@@ -34,7 +34,7 @@ const FirebaseAuthProvider = ({children}: Props) => {
         .onSnapshot(documentSnapshot => {
           const data = documentSnapshot.data();
           console.log('Firestore User Data: ', data);
-          if(data) setFirestoreUser(data)
+          setFirestoreUser(data)
         });
       return () => subscriber();
     }
