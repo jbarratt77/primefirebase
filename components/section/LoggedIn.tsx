@@ -52,6 +52,18 @@ function UserRole() {
     );
 }
 
+function Lodges() {
+  const { firestoreUser } = useFirebaseAuth();
+  return (
+    <>
+      <FormLabel>Lodges</FormLabel>
+      {firestoreUser?.lodges.map((lodge: number) => {
+        return <FormValue key={lodge}>{lodge || "-"}</FormValue>
+      })}
+    </>
+    );
+}
+
 const Profile = () => {
   return (
     <Form>
@@ -59,6 +71,7 @@ const Profile = () => {
       <UserName />
       <UserEmail />
       <UserRole />
+      <Lodges />
     </Form>
   );
 };
