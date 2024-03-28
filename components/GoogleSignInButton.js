@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from './Button';
 import auth from '@react-native-firebase/auth';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {GoogleSignin, GoogleSigninButton} from '@react-native-google-signin/google-signin';
 
 async function onGoogleButtonPress() {
   // Check if your device supports Google Play
@@ -18,9 +18,7 @@ async function onGoogleButtonPress() {
 
 function GoogleSignInButton() {
   return (
-    <Button
-      text="Google Sign-In"
-      color="#24C2CB" 
+    <GoogleSigninButton
       onPress={() =>
         onGoogleButtonPress().then(() => console.log('Signed in with Google!'))
       }
