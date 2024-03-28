@@ -9,7 +9,7 @@ GoogleSignin.configure({
 });
 
 function App(): React.JSX.Element {
-  const user = useFirebaseAuth();
+  const { user } = useFirebaseAuth();
   console.log(user)
   return user ? <LoggedIn /> : <LoggedOut />;
 }

@@ -8,9 +8,11 @@ import {
   useContext,
 } from 'react';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import firestore, {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
 
 type User = FirebaseAuthTypes.User | null;
-type ContextState = {user: User};
+type FirestoreUser = FirebaseFirestoreTypes.DocumentData | null;
+type ContextState = {user: User, firestoreUser: FirestoreUser};
 interface Props {
   children: ReactNode;
 }
@@ -19,11 +21,28 @@ const FirebaseAuthContext = createContext<ContextState | undefined>(undefined);
 
 const FirebaseAuthProvider = ({children}: Props) => {
   const [user, setUser] = useState<User>(null);
-  const value = {user};
+  const [firestoreUser, setFirestoreUser] = useState<FirestoreUser>(null)
+  const value = {user, firestoreUser};
+
+  function onAuthStateChanged(user: User) {
+    console.log('here', user)
+    setUser(user)
+    if(user) {
+      const subscriber = firestore()
+        .collection('Users')
+        .doc(user.uid)
+        .onSnapshot(documentSnapshot => {
+          const data = documentSnapshot.data();
+          console.log('Firestore User Data: ', data);
+          if(data) setFirestoreUser(data)
+        });
+      return () => subscriber();
+    }
+  }
 
   useEffect(() => {
-    const unsubscribe = auth().onAuthStateChanged(setUser);
-    return unsubscribe;
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber;
   }, []);
 
   return (
@@ -40,7 +59,9 @@ function useFirebaseAuth() {
       'useFirebaseAuth must be used within a FirebaseAuthProvider',
     );
   }
-  return context.user;
+  const user = context.user;
+  const firestoreUser = context.firestoreUser;
+  return {user, firestoreUser}
 }
 
 export {FirebaseAuthProvider, useFirebaseAuth};

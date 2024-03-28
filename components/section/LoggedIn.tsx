@@ -23,7 +23,7 @@ const LogoutButton = () => {
 
 
 function UserName() {
-  const user = useFirebaseAuth();
+  const { user } = useFirebaseAuth();
   return (
     <>
       <FormLabel>User Display Name</FormLabel>
@@ -33,11 +33,21 @@ function UserName() {
 }
 
 function UserEmail() {
-  const user = useFirebaseAuth();
+  const { user } = useFirebaseAuth();
   return (
     <>
       <FormLabel>User Email</FormLabel>
       <FormValue>{user?.email || "-"}</FormValue>
+    </>
+    );
+}
+
+function UserRole() {
+  const { firestoreUser } = useFirebaseAuth();
+  return (
+    <>
+      <FormLabel>User Role</FormLabel>
+      <FormValue>{firestoreUser?.role || "-"}</FormValue>
     </>
     );
 }
@@ -48,6 +58,7 @@ const Profile = () => {
       <FormLabel>Logged In</FormLabel>
       <UserName />
       <UserEmail />
+      <UserRole />
     </Form>
   );
 };
