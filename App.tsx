@@ -1,9 +1,7 @@
 import React from 'react';
-import {Button, View, Text} from 'react-native';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {useFirebaseAuth} from './context/FirebaseAuthContext';
 import LoggedInAndMember from './components/section/LoggedInAndMember';
 import LoggedInNotMember from './components/section/LoggedInNotMember';
@@ -16,7 +14,6 @@ GoogleSignin.configure({
 });
 
 const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
 
 function App(): React.JSX.Element {
   const {user, firestoreUser, isLoading} = useFirebaseAuth();
@@ -26,22 +23,6 @@ function App(): React.JSX.Element {
     return <SplashScreen />;
   }
 
-  function Home() {
-    return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <Text>Home Screen</Text>
-      </View>
-    );
-  }
-
-  function Meetings() {
-    return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <Text>Meetings Screen</Text>
-      </View>
-    );
-  }
-
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -49,14 +30,8 @@ function App(): React.JSX.Element {
           <>
             <Stack.Screen
               name="Logged in and member"
+              component={LoggedInAndMember}
               options={{headerShown: false}}>
-              {() => (
-                <Tab.Navigator>
-                  <Tab.Screen name="St. Erkenwald" component={Home} />
-                  <Tab.Screen name="Meetings" component={Meetings} />
-                  <Tab.Screen name="Profile" component={LoggedInAndMember} />
-                </Tab.Navigator>
-              )}
             </Stack.Screen>
           </>
         ) : user && !firestoreUser ? (

@@ -1,84 +1,47 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import ButtonContainer from '../ButtonContainer';
-import {Form, FormLabel, FormValue, Page} from '..';
-import { useFirebaseAuth } from '../../context/FirebaseAuthContext';
-import LogoutButton from '../LogoutButton';
+import React, { useEffect, useState } from 'react';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Profile from '../Profile';
+import {View, Text} from 'react-native';
+import firestore, {FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
 
+type LodgeData = FirebaseFirestoreTypes.DocumentData | null | undefined;
 
-function UserName() {
-  const { user } = useFirebaseAuth();
+function Home() {
   return (
-    <>
-      <FormLabel>User Display Name</FormLabel>
-      <FormValue>{user?.displayName || "unauthenticated"}</FormValue>
-    </>
-    );
-}
-
-function UserEmail() {
-  const { user } = useFirebaseAuth();
-  return (
-    <>
-      <FormLabel>User Email</FormLabel>
-      <FormValue>{user?.email || "-"}</FormValue>
-    </>
-    );
-}
-
-function UserRole() {
-  const { firestoreUser } = useFirebaseAuth();
-  return (
-    <>
-      <FormLabel>User Role</FormLabel>
-      <FormValue>{firestoreUser?.role || "-"}</FormValue>
-    </>
-    );
-}
-
-function Lodges() {
-  const { firestoreUser } = useFirebaseAuth();
-  return (
-    <>
-      <FormLabel>Lodges</FormLabel>
-      {firestoreUser?.lodges.map((lodge: number) => {
-        return <FormValue key={lodge}>{lodge || "-"}</FormValue>
-      })}
-    </>
-    );
-}
-
-const Profile = () => {
-  return (
-    <Form>
-      <FormLabel>Logged In</FormLabel>
-      <UserName />
-      <UserEmail />
-      <UserRole />
-      <Lodges />
-    </Form>
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Home Screen</Text>
+    </View>
   );
-};
+}
+
+function Meetings() {
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Meetings Screen</Text>
+    </View>
+  );
+}
+
+const Tab = createBottomTabNavigator();
 
 function LoggedInAndMember(): React.JSX.Element {
+  const [lodgeData, setLodgeData] = useState<LodgeData>(null)
+  useEffect(() => {
+    firestore()
+      .collection('Lodges')
+      .doc('2808')
+      .onSnapshot(documentSnapshot => {
+        const data = documentSnapshot.data();
+        setLodgeData(data)
+      });
+  }, [])
   return (
-    <Page>
-      <View style={styles.container}>
-        <Profile />
-        <ButtonContainer>
-          <LogoutButton />
-        </ButtonContainer>
-      </View>
-    </Page>
+    <Tab.Navigator>
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Meetings" component={Meetings} />
+      <Tab.Screen name="Profile" component={Profile} />
+    </Tab.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 export default LoggedInAndMember;
