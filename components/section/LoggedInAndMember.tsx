@@ -1,25 +1,9 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import auth from '@react-native-firebase/auth';
-import ButtonContainer from '../../components/ButtonContainer';
-import Button from '../../components/Button';
-import {Form, FormLabel, FormValue, Page} from '../../components';
+import ButtonContainer from '../ButtonContainer';
+import {Form, FormLabel, FormValue, Page} from '..';
 import { useFirebaseAuth } from '../../context/FirebaseAuthContext';
-
-const LogoutButton = () => {
-
-  const onPress = async () => {
-    try {
-      await auth()
-        .signOut()
-        .then(() => console.log('User signed out!'));
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  return <Button onPress={onPress} text="Log out" color="#EF525B" />;
-};
+import LogoutButton from '../LogoutButton';
 
 
 function UserName() {
@@ -76,7 +60,7 @@ const Profile = () => {
   );
 };
 
-function LoggedIn(): React.JSX.Element {
+function LoggedInAndMember(): React.JSX.Element {
   return (
     <Page>
       <View style={styles.container}>
@@ -97,4 +81,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoggedIn;
+export default LoggedInAndMember;

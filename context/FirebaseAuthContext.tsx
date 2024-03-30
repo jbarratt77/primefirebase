@@ -12,7 +12,8 @@ import firestore, {FirebaseFirestoreTypes} from '@react-native-firebase/firestor
 
 type User = FirebaseAuthTypes.User | null;
 type FirestoreUser = FirebaseFirestoreTypes.DocumentData | null | undefined;
-type ContextState = {user: User, firestoreUser: FirestoreUser};
+type IsLoading = boolean | null;
+type ContextState = {user: User, firestoreUser: FirestoreUser, isLoading: IsLoading};
 interface Props {
   children: ReactNode;
 }
@@ -22,10 +23,11 @@ const FirebaseAuthContext = createContext<ContextState | undefined>(undefined);
 const FirebaseAuthProvider = ({children}: Props) => {
   const [user, setUser] = useState<User>(null);
   const [firestoreUser, setFirestoreUser] = useState<FirestoreUser>(null)
-  const value = {user, firestoreUser};
+  const [isLoading, setIsLoading] = useState<IsLoading>(null)
+  const value = {user, firestoreUser, isLoading: isLoading};
 
   function onAuthStateChanged(user: User) {
-    console.log('here', user)
+    setIsLoading(true)
     setUser(user)
     if(user) {
       const subscriber = firestore()
@@ -33,11 +35,12 @@ const FirebaseAuthProvider = ({children}: Props) => {
         .doc(user.uid)
         .onSnapshot(documentSnapshot => {
           const data = documentSnapshot.data();
-          console.log('Firestore User Data: ', data);
           setFirestoreUser(data)
         });
+      setIsLoading(false)
       return () => subscriber();
     }
+    setIsLoading(false)
   }
 
   useEffect(() => {
@@ -61,7 +64,7 @@ function useFirebaseAuth() {
   }
   const user = context.user;
   const firestoreUser = context.firestoreUser;
-  return {user, firestoreUser}
+  return {user, firestoreUser, isLoading: context.isLoading}
 }
 
 export {FirebaseAuthProvider, useFirebaseAuth};
