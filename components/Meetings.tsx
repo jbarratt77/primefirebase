@@ -1,17 +1,17 @@
 import React from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import {View, Text, FlatList, TouchableOpacity, StyleSheet} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
-import { useLodgeData } from '../context/LodgeDataContext';
+import {useNavigation} from '@react-navigation/native';
+import {useLodgeData} from '../context/LodgeDataContext';
 
 const Stack = createNativeStackNavigator();
 
-function MeetingCard({ meeting }) {
+function MeetingCard({meeting}) {
   const navigation = useNavigation();
 
   const navigateToMeetingDetail = () => {
     // Navigate to Meeting Detail page with the specific meeting data
-    navigation.navigate('Meeting Detail', { meeting });
+    navigation.navigate('Meeting Detail', {meeting});
   };
 
   return (
@@ -32,9 +32,9 @@ function Meetings() {
 }
 
 function MeetingsScreen() {
-  const { meetingData } = useLodgeData();
+  const {meetingData} = useLodgeData();
 
-  const renderItem = ({ item }) => <MeetingCard meeting={item} />;
+  const renderItem = ({item}) => <MeetingCard meeting={item} />;
   return (
     <View style={styles.container}>
       <FlatList
@@ -47,20 +47,40 @@ function MeetingsScreen() {
   );
 }
 
-function MeetingDetailScreen({ route }) {
-  const { meeting } = route.params;
+function MeetingDetailScreen({route}) {
+  const {meeting} = route.params;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.name}>{meeting.name}</Text>
-      <Text style={styles.date}>{meeting.date.toDate().toLocaleString()}</Text>
-      <Text style={styles.sectionTitle}>Agenda:</Text>
-      <FlatList
-        data={meeting.agenda}
-        renderItem={({ item }) => <Text style={styles.agendaItem}>{item}</Text>}
-        // keyExtractor={(item, index) => index.toString()}
-      />
-    </View>
+    <>
+      <View style={styles.container}>
+        <Text style={styles.name}>{meeting.name}</Text>
+        <Text style={styles.date}>
+          {meeting.date.toDate().toLocaleString()}
+        </Text>
+        <Text style={styles.date}>
+          {meeting.location}
+        </Text>
+        <Text style={styles.sectionTitle}>Agenda:</Text>
+        <FlatList
+          data={meeting.agenda}
+          renderItem={({item}) => <Text style={styles.agendaItem}>{item}</Text>}
+          // keyExtractor={(item, index) => index.toString()}
+        />
+      </View>
+      <View style={styles.container}>
+        <Text style={styles.name}>Minutes</Text>
+        <FlatList
+          data={meeting.minutes}
+          renderItem={({item, index}) => (
+            <>
+              <Text style={styles.sectionTitle}>{meeting.agenda[index]}</Text>
+              <Text style={styles.agendaItem}>{item}</Text>
+            </>
+          )}
+          // keyExtractor={(item, index) => index.toString()}
+        />
+      </View>
+    </>
   );
 }
 
