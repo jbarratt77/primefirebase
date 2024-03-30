@@ -1,6 +1,5 @@
 // FirebaseAuthContext.tsx
 import {
-  FC,
   createContext,
   ReactNode,
   useState,

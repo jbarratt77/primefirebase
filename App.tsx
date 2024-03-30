@@ -31,8 +31,8 @@ function App(): React.JSX.Element {
             <Stack.Screen
               name="Logged in and member"
               component={LoggedInAndMember}
-              options={{headerShown: false}}>
-            </Stack.Screen>
+              options={{headerShown: false}}
+            />
           </>
         ) : user && !firestoreUser ? (
           <>
